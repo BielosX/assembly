@@ -1,0 +1,12 @@
+podman-binutils-cmd := "podman run --rm -v $(pwd):/usr/src/workdir -w /usr/src/workdir aarch64-binutils:latest"
+
+build-image:
+    podman build -t aarch64-binutils:latest {{justfile_directory()}}
+
+hello-world: build-image
+    mkdir -p bin
+    {{podman-binutils-cmd}} aarch64-linux-gnu-as -o bin/hello_world.o hello_world/main.S
+    {{podman-binutils-cmd}} aarch64-linux-gnu-ld -nostdlib -o bin/hello_world bin/hello_world.o
+
+clean:
+    rm -rf bin

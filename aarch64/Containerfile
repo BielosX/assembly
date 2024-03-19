@@ -1,0 +1,17 @@
+FROM debian:bookworm
+
+ENV BINUTILS_VERSION="2.41.90"
+ENV TARGET="aarch64-linux-gnu"
+ENV PREFIX="/opt/cross"
+
+WORKDIR /opt/binutils
+
+RUN apt update && apt -y install xz-utils gcc g++ make
+ADD "https://sourceware.org/pub/binutils/snapshots/binutils-${BINUTILS_VERSION}.tar.xz" binutils.tar.xz
+RUN tar -xf binutils.tar.xz --strip-components=1
+RUN ./configure --target="${TARGET}" --prefix="${PREFIX}" --disable-nls --disable-werror && \
+    make -j 8 && make install
+
+FROM debian:bookworm
+COPY --from=0 /opt/cross /opt/cross
+ENV PATH="${PATH}:/opt/cross/bin"
