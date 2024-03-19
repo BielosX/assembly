@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:bookworm-slim
 
 ENV BINUTILS_VERSION="2.41.90"
 ENV TARGET="aarch64-linux-gnu"
@@ -12,6 +12,6 @@ RUN tar -xf binutils.tar.xz --strip-components=1
 RUN ./configure --target="${TARGET}" --prefix="${PREFIX}" --disable-nls --disable-werror && \
     make -j 8 && make install
 
-FROM debian:bookworm
+FROM debian:bookworm-slim
 COPY --from=0 /opt/cross /opt/cross
 ENV PATH="${PATH}:/opt/cross/bin"
