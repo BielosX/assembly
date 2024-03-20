@@ -1,5 +1,9 @@
 # assembly
 
+## Requirements
+* [podman](https://podman.io) `4.9.3+`
+* [just](https://github.com/casey/just) `1.25.1+`
+
 ## Troubleshooting
 
 ### MacOS podman issue
