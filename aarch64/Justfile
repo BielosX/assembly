@@ -1,10 +1,11 @@
-podman-binutils-cmd := "podman run --rm -v $(pwd):/usr/src/workdir -w /usr/src/workdir aarch64-binutils:latest"
+image := "aarch64-binutils:latest"
+podman-binutils-cmd := "podman run --rm -v $(pwd):/usr/src/workdir -w /usr/src/workdir " + image
 
 build-image:
-    podman build -t aarch64-binutils:latest {{justfile_directory()}}
+    podman build -t {{image}} {{justfile_directory()}}
 
 check-image:
-    podman image exists aarch64-binutils:latest
+    podman image exists {{image}}
 
 hello-world: check-image
     mkdir -p bin
