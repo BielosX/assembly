@@ -3,6 +3,7 @@ podman-binutils-cmd := "podman run --rm -v $(pwd):/usr/src/workdir -w /usr/src/w
 
 build-image:
     podman build -t {{image}} {{justfile_directory()}}
+    podman image prune --force --filter label=stage=builder
 
 check-image:
     podman image exists {{image}}
