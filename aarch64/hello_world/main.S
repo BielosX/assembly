@@ -2,16 +2,26 @@
 
 .global _start
 
-_start:
-    mov x0, #1
-    ldr x1, =hello
-    mov x2, #hello_len
-    mov x8, #64
-    svc #0
+.set stdout, 1
 
-    mov x0, #0
+.macro exit code
+    mov x0, #(\code)
     mov x8, #93
     svc #0
+.endm
+
+.macro write file_desc buffer len
+    mov x0, #(\file_desc)
+    ldr x1, =(\buffer)
+    mov x2, #(\len)
+    mov x8, #64
+    svc #0
+.endm
+
+_start:
+    write stdout hello hello_len
+    exit 0
+
 
 .section .rodata
 
