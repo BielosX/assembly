@@ -15,6 +15,7 @@
 # x0: input, x1: input_len, x2: output
 base64_encode:
     stp x29, x30, [sp, #-16]!
+    mov x29, sp
 
     ldp x29, x30, [sp], #16
     ret
@@ -23,6 +24,9 @@ base64_encode:
 _start:
     # [sp, #-16]! -> Pre-indexed addressing, (sp - 16) is addressed and sp = sp - 16
     # STP -> Store Pair of registers
+    # According to ABI the calee is responsible for storing RET address and pointer to previous SP on STACK
+    # Comapring to AMD64 https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24594.pdf
+    # (manual page 130) where CALL operation saves next instruction pointer directly on STACK
     stp x29, x30, [sp, #-16]! 
     mov x29, sp
 
