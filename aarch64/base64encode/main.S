@@ -9,7 +9,7 @@
 # https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst
 
 # x30 -> link register, bl call saves return address there
-# x29 -> frame pointer, 
+# x29 -> frame pointer, saved caller stack pointer
 
 # void base_encode(uint8_t* input, uint64_t input_len, uint8_t* output)
 # x0: input, x1: input_len, x2: output
