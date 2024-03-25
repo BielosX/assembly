@@ -22,6 +22,8 @@ base64_encode:
 
 
 _start:
+    # https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst#universal-stack-constraints
+    # SP mod 16 = 0. The stack must be quad-word aligned.
     # [sp, #-16]! -> Pre-indexed addressing, (sp - 16) is addressed and sp = sp - 16
     # STP -> Store Pair of registers
     # According to ABI the calee is responsible for storing RET address and pointer to previous SP on STACK
