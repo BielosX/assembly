@@ -6,6 +6,8 @@
 
 .set stdout, 1
 
+# https://developer.arm.com/documentation/dui0801/a/Overview-of-the-ARM-Architecture/About-the-ARM-architecture
+
 _start:
     write stdout hello hello_len
     exit 0
