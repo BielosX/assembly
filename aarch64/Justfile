@@ -22,5 +22,10 @@ base64encode: check-image
     {{as}} {{as-flags}} -o bin/base64encode.o base64encode/main.S
     {{ld}} {{ld-flags}} -o bin/base64encode bin/base64encode.o
 
+for-loop: check-image
+    mkdir -p bin
+    {{as}} {{as-flags}} -o bin/for_loop.o for_loop/main.S
+    {{ld}} {{ld-flags}} -o bin/for_loop bin/for_loop.o
+
 clean:
     rm -rf bin
