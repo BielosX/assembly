@@ -19,6 +19,7 @@ for_loop_func:
     mov x15, #0 
 loop_start:
     cmp x15, x0
+    # https://developer.arm.com/documentation/dui0801/a/Condition-Codes/Condition-code-suffixes
     beq loop_end
     stp x0, x15, [sp]
     write stdout iteration_text iteration_text_end
