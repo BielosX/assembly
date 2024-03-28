@@ -1,5 +1,6 @@
 FROM debian:bookworm-slim
 LABEL stage=builder
+USER root
 
 ENV BINUTILS_VERSION="2.41.90"
 ENV TARGET="aarch64-linux-gnu"
@@ -14,7 +15,9 @@ RUN ./configure --target="${TARGET}" --prefix="${PREFIX}" --disable-nls --disabl
     make -j 8 && make install
 
 FROM alpine:3
+USER root
 # https://wiki.alpinelinux.org/wiki/Running_glibc_programs
-RUN apk update && apk add gcompat
+RUN apk update && apk add gcompat && addgroup -S binutils && adduser -S binutils -G binutils
 COPY --from=0 /opt/cross /opt/cross
+USER binutils
 ENV PATH="${PATH}:/opt/cross/bin"

@@ -1,5 +1,6 @@
 image := "aarch64-binutils:latest"
-podman-binutils-cmd := "podman run --rm -v $(pwd):/usr/src/workdir -w /usr/src/workdir " + image
+mount-settings := "--mount type=bind,src=$(pwd),dst=/home/binutils,rw=true"
+podman-binutils-cmd := "podman run --rm " + mount-settings + " -w /home/binutils " + image
 as := podman-binutils-cmd + " aarch64-linux-gnu-as"
 ld := podman-binutils-cmd + " aarch64-linux-gnu-ld"
 ld-flags := "-nostdlib"
@@ -12,18 +13,19 @@ build-image:
 check-image:
     podman image exists {{image}}
 
-hello-world: check-image
+create-bin:
     mkdir -p bin
+    chmod a+rw bin
+
+hello-world: check-image create-bin
     {{as}} {{as-flags}} -o bin/hello_world.o hello_world/main.S
     {{ld}} {{ld-flags}} -o bin/hello_world bin/hello_world.o
 
-base64encode: check-image
-    mkdir -p bin
+base64encode: check-image create-bin
     {{as}} {{as-flags}} -o bin/base64encode.o base64encode/main.S
     {{ld}} {{ld-flags}} -o bin/base64encode bin/base64encode.o
 
-for-loop: check-image
-    mkdir -p bin
+for-loop: check-image create-bin
     {{as}} {{as-flags}} -o bin/for_loop.o for_loop/main.S
     {{ld}} {{ld-flags}} -o bin/for_loop bin/for_loop.o
 
