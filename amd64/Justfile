@@ -1,0 +1,27 @@
+image := "nasm-gold:latest"
+mount-settings := "--mount type=bind,src=$(pwd),dst=/home/nasm,rw=true"
+podman-binutils-cmd := "podman run --rm " + mount-settings + " -w /home/nasm " + image
+as := podman-binutils-cmd + " nasm"
+ld := podman-binutils-cmd + " x86_64-linux-gnu-ld.gold"
+ld-flags := "-nostdlib"
+
+build-image:
+    podman build --layers --squash-all -t {{image}} {{justfile_directory()}}
+
+check-image:
+    podman image exists {{image}}
+
+create-bin:
+    mkdir -p bin
+    chmod a+rw bin
+
+hello-world: check-image create-bin
+    {{as}} -f elf64 -o bin/hello_world.o hello_world/main.asm
+    {{ld}} {{ld-flags}} -o bin/hello_world bin/hello_world.o    
+
+test: check-image create-bin
+    {{as}} -f elf64 -o bin/test.o hello_world/test.s
+    {{ld}} {{ld-flags}} -o bin/test bin/test.o    
+
+clean:
+    rm -rf bin

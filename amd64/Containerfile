@@ -1,0 +1,35 @@
+FROM debian:bookworm-slim
+LABEL stage=builder
+USER root
+
+ENV BINUTILS_VERSION="2.41.90"
+ENV NASM_VERSION="2.16.01"
+ENV TARGET="x86_64-linux-gnu"
+ENV BINUTILS_PREFIX="/opt/cross/binutils"
+ENV NASM_PREFIX="/opt/cross/nasm"
+
+WORKDIR /opt/binutils
+
+RUN apt update && apt -y install xz-utils gcc g++ make
+ADD "https://sourceware.org/pub/binutils/snapshots/binutils-${BINUTILS_VERSION}.tar.xz" binutils.tar.xz
+RUN tar -xf binutils.tar.xz --strip-components=1
+RUN ./configure --target="${TARGET}" --prefix="${BINUTILS_PREFIX}" --enable-gold --disable-nls --disable-werror && \
+    make -j 8 && make install
+
+WORKDIR /opt/nasm
+ADD "https://www.nasm.us/pub/nasm/releasebuilds/${NASM_VERSION}/nasm-${NASM_VERSION}.tar.xz" nasm.tar.xz
+RUN tar -xf nasm.tar.xz --strip-components=1
+RUN ./configure --prefix="${NASM_PREFIX}" && make -j 8 && make install
+
+RUN adduser --disabled-password --gecos "" nasm 
+
+FROM alpine:latest
+COPY --from=0 /etc/passwd /etc/passwd
+COPY --from=0 /opt/cross/binutils/bin/x86_64-linux-gnu-ld.gold /opt/cross/x86_64-linux-gnu-ld.gold
+COPY --from=0 /opt/cross/binutils/bin/x86_64-linux-gnu-ld /opt/cross/x86_64-linux-gnu-ld
+COPY --from=0 /opt/cross/nasm/bin/nasm /opt/cross/nasm
+COPY --from=0 /lib/* /lib
+
+USER nasm
+ENV PATH="${PATH}:/opt/cross"
+ENV LD_LIBRARY_PATH="/lib"
