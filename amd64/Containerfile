@@ -23,7 +23,7 @@ RUN ./configure --prefix="${NASM_PREFIX}" && make -j 8 && make install
 
 RUN adduser --disabled-password --gecos "" nasm 
 
-FROM alpine:latest
+FROM scratch
 COPY --from=0 /etc/passwd /etc/passwd
 COPY --from=0 /opt/cross/binutils/bin/x86_64-linux-gnu-ld.gold /opt/cross/x86_64-linux-gnu-ld.gold
 COPY --from=0 /opt/cross/binutils/bin/x86_64-linux-gnu-ld /opt/cross/x86_64-linux-gnu-ld
