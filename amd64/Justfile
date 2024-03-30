@@ -19,9 +19,5 @@ hello-world: check-image create-bin
     {{as}} -f elf64 -o bin/hello_world.o hello_world/main.asm
     {{ld}} {{ld-flags}} -o bin/hello_world bin/hello_world.o    
 
-test: check-image create-bin
-    {{as}} -f elf64 -o bin/test.o hello_world/test.s
-    {{ld}} {{ld-flags}} -o bin/test bin/test.o    
-
 clean:
     rm -rf bin
