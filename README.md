@@ -24,6 +24,11 @@ podman machine start
 
 [LLDB Tutorial](https://lldb.llvm.org/use/tutorial.html)
 
+To load executable named `hello_world`:
+```shell
+lldb hello_world
+```
+
 To run process and stop at `_start`:
 ```shell
 (lldb) process launch --stop-at-entry
