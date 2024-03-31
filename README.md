@@ -44,7 +44,7 @@ To read all General Purpose Registers:
 (lldb) register read
 ```
 
-To read 10 bytes from memory address `0x4000a0` one by one and display as char[]:
+To read 15 bytes from memory address `0x4000a0` one by one and display as char[]:
 ```shell
 (lldb) memory read --size 1 --count 15 --format char[] 0x4000a0
 ```
