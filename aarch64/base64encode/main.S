@@ -4,7 +4,7 @@
 
 .global _start
 
-# https://developer.arm.com/documentation/102374/0101/Loads-and-stores---addressing
+# https://developer.arm.com/documentation/102374/0103/Loads-and-stores---addressing
 # https://learn.arm.com/learning-paths/servers-and-cloud-computing/exploiting-stack-buffer-overflow-aarch64/frame-layout/
 # https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst
 
