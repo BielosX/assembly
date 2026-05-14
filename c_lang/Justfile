@@ -1,0 +1,6 @@
+build:
+    mkdir -p bin
+    clang -g -o bin/out -I include src/*.c
+
+clean:
+    rm -rf bin
